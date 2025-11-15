@@ -1,4 +1,16 @@
 <?php
+
+
+// Permite acceso desde cualquier origen (dev, producción ajusta el dominio)
+header("Access-Control-Allow-Origin: *");
+// Permite ciertos métodos (GET, POST)
+header("Access-Control-Allow-Methods: GET, POST");
+header('Content-Type: application/json');
+
+
+
+
+
 // Indica que la respuesta será en formato JSON
 header('Content-Type: application/json');
 
