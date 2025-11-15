@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Frases motivacionales con Vue y PHP</title>
+  <!-- Carga Vue.js desde CDN para usarlo en esta página -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body>
+  <!-- Elemento raíz donde se monta la aplicación Vue -->
+  <div id="app">
+    <!-- Muestra la frase que se obtiene de la API -->
+    <p><strong>Frase:</strong> {{ phrase }}</p>
+    <!-- Muestra el autor de la frase -->
+    <p><em>Autor:</em> {{ author }}</p>
+    <!-- Botón para obtener una nueva frase -->
+    <button @click="fetchPhrase">Nueva frase</button>
+    <!-- Muestra un mensaje de error si ocurre alguno -->
+    <p v-if="error" style="color:red;">{{ error }}</p>
+  </div>
+
+  <script>
+    // Crear una nueva instancia Vue que controla el div con id="app"
+    new Vue({
+      el: '#app', // Selector del elemento donde se monta la app
+      data: {
+        // Variable para almacenar la frase obtenida de la API
+        phrase: '',
+        // Variable para almacenar el autor de la frase
+        author: '',
+        // Variable para almacenar mensajes de error, si ocurren
+        error: ''
+      },
+      methods: {
+        // Método que realiza la petición a la API PHP para obtener una frase nueva
+        fetchPhrase() {
+          this.error = ''; // Limpiar cualquier error previo
+          fetch('D:\Proyectos\Programación\FRASES-API\BUSCAAPI.PHP') // Cambiar esta ruta por la correcta de tu backend PHP
+            .then(response => {
+              // Verificar que la respuesta fue exitosa (status 200)
+              if (!response.ok) {
+                // Si no, lanzar un error para atraparlo luego
+                throw new Error('Error al obtener la frase');
+              }
+              // Convertir la respuesta en JSON
+              return response.json();
+            })
+            .then(data => {
+              // Si el JSON incluye un error, mostrarlo
+              if (data.error) {
+                this.error = data.error;
+              } else {
+                // Si no, actualizar los datos que se muestran en la página
+                this.phrase = data.phrase;
+                this.author = data.author;
+              }
+            })
+            .catch(err => {
+              // Capturar y mostrar errores de conexión o inesperados
+              this.error = err.message;
+            });
+        }
+      },
+      // Lifecycle hook que se ejecuta al montar la app,
+      // para obtener una frase inmediatamente al cargar la página
+      mounted() {
+        this.fetchPhrase();
+      }
+    });
+  </script>
+</body>
+</html>
