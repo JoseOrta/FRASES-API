@@ -35,7 +35,7 @@
         // Método que realiza la petición a la API PHP para obtener una frase nueva
         fetchPhrase() {
           this.error = ''; // Limpiar cualquier error previo
-          fetch('D:\Proyectos\Programación\FRASES-API\BUSCAAPI.PHP') // Cambiar esta ruta por la correcta de tu backend PHP
+          fetch('BUSCAAPI.PHP') // Cambiar esta ruta por la correcta de tu backend PHP
             .then(response => {
               // Verificar que la respuesta fue exitosa (status 200)
               if (!response.ok) {
